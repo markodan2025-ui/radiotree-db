@@ -1,9 +1,81 @@
 {
  "schema": 1,
- "version": 0,
- "generated": null,
+ "version": 1,
+ "generated": "2026-08-18T15:17:58Z",
  "count": 0,
- "sha256": null,
+ "sha256": "e06080a9724a287e603f50e499260a47fa51c69fd9a13d71f09c3265ef79672c",
+ "bytes": 680,
  "stations_url": "stations.json",
- "genres": []
+ "genres": [
+  {
+   "id": "rock",
+   "name": "Rock",
+   "count": 0
+  },
+  {
+   "id": "jazz",
+   "name": "Jazz",
+   "count": 0
+  },
+  {
+   "id": "classical",
+   "name": "Classical",
+   "count": 0
+  },
+  {
+   "id": "blues",
+   "name": "Blues",
+   "count": 0
+  },
+  {
+   "id": "soul",
+   "name": "Soul",
+   "count": 0
+  },
+  {
+   "id": "electronic",
+   "name": "Electronic",
+   "count": 0
+  },
+  {
+   "id": "pop",
+   "name": "Pop",
+   "count": 0
+  },
+  {
+   "id": "world",
+   "name": "World",
+   "count": 0
+  },
+  {
+   "id": "folk",
+   "name": "Folk",
+   "count": 0
+  },
+  {
+   "id": "hiphop",
+   "name": "Hip-Hop",
+   "count": 0
+  },
+  {
+   "id": "metal",
+   "name": "Metal",
+   "count": 0
+  },
+  {
+   "id": "news",
+   "name": "News & Talk",
+   "count": 0
+  },
+  {
+   "id": "lounge",
+   "name": "Lounge",
+   "count": 0
+  },
+  {
+   "id": "audiophile",
+   "name": "Audiophile",
+   "count": 0
+  }
+ ]
 }
