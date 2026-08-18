@@ -1,0 +1,19 @@
+{
+  "_comment": "Taksonomija zanrova. tags = sto se salje Radio Browseru. target = koliko stanica zelis u finalnoj bazi.",
+  "genres": [
+    { "id": "rock",       "name": "Rock",        "tags": ["rock", "classic rock", "hard rock"], "target": 40 },
+    { "id": "jazz",       "name": "Jazz",        "tags": ["jazz", "smooth jazz", "bebop"], "target": 40 },
+    { "id": "classical",  "name": "Classical",   "tags": ["classical", "opera", "baroque"], "target": 40 },
+    { "id": "blues",      "name": "Blues",       "tags": ["blues", "rhythm and blues"], "target": 30 },
+    { "id": "soul",       "name": "Soul",        "tags": ["soul", "funk", "motown"], "target": 30 },
+    { "id": "electronic", "name": "Electronic",  "tags": ["electronic", "ambient", "downtempo", "house"], "target": 40 },
+    { "id": "pop",        "name": "Pop",         "tags": ["pop", "top 40"], "target": 30 },
+    { "id": "world",      "name": "World",       "tags": ["world music", "latin", "reggae", "afrobeat"], "target": 30 },
+    { "id": "folk",       "name": "Folk",        "tags": ["folk", "americana", "country", "bluegrass"], "target": 30 },
+    { "id": "hiphop",     "name": "Hip-Hop",     "tags": ["hip hop", "rap"], "target": 25 },
+    { "id": "metal",      "name": "Metal",       "tags": ["metal", "heavy metal", "progressive metal"], "target": 25 },
+    { "id": "news",       "name": "News & Talk", "tags": ["news", "talk", "public radio"], "target": 25 },
+    { "id": "lounge",     "name": "Lounge",      "tags": ["lounge", "chillout", "easy listening", "bossa nova"], "target": 30 },
+    { "id": "audiophile", "name": "Audiophile",  "tags": ["flac", "lossless", "hi-fi", "hires"], "target": 40 }
+  ]
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RadioTree Stream Manager</title>
+<style>
+:root{--bg:#0b0d10;--panel:#14181d;--line:#242a31;--txt:#e7ebef;--dim:#8b96a2;
+--yes:#39c07a;--no:#e05260;--maybe:#e0a13a;--acc:#5aa9e6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:10;background:#0b0d10ee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.tabs{display:flex}
+.tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--dim);padding:13px 4px;font-size:13px;font-weight:600;letter-spacing:.04em}
+.tabs button.on{color:var(--txt);border-bottom-color:var(--acc)}
+main{padding:14px;max-width:820px;margin:0 auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+h2{margin:0 0 6px;font-size:20px;line-height:1.25}
+.meta{color:var(--dim);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{background:#1d232a;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--dim)}
+.chip.good{color:var(--yes);border-color:#2b5c45}
+.chip.bad{color:var(--no);border-color:#5c2b31}
+.chip.warn{color:var(--maybe);border-color:#5c4a2b}
+.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+.actions button{border:0;border-radius:12px;padding:16px 4px;font-size:15px;font-weight:700;color:#06090c}
+.b-yes{background:var(--yes)}.b-no{background:var(--no)}.b-maybe{background:var(--maybe)}
+.row{display:flex;gap:8px;margin-top:8px}
+.row button,.row select,.row input{flex:1;background:#1d232a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:11px;font-size:14px}
+.bar{height:6px;background:#1d232a;border-radius:3px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--acc)}
+.item{border-bottom:1px solid var(--line);padding:11px 0;display:flex;gap:10px;align-items:center}
+.item:last-child{border:0}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.nm{flex:1;min-width:0}
+.nm b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm span{color:var(--dim);font-size:12px}
+.v{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:#1d232a;color:var(--dim)}
+.v.yes{color:var(--yes)}.v.no{color:var(--no)}.v.maybe{color:var(--maybe)}
+.kv{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.kv span:first-child{color:var(--dim)}
+.warnbox{background:#2a1d1f;border:1px solid #5c2b31;border-radius:10px;padding:11px;font-size:13px;color:#f0b8bd;margin-bottom:12px}
+.muted{color:var(--dim);font-size:13px;text-align:center;padding:30px 10px}
+audio{width:100%;margin-top:12px}
+textarea{width:100%;height:180px;background:#0e1216;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:12px/1.4 ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<header>
+  <div class="tabs">
+    <button data-t="triage" class="on">SLUŠANJE</button>
+    <button data-t="catalog">KATALOG</button>
+    <button data-t="health">ZDRAVLJE</button>
+    <button data-t="sync">SPREMI</button>
+  </div>
+</header>
+<main id="app"><div class="muted">Učitavam…</div></main>
+
+<script>
+"use strict";
+(function(){
+var LS="rt_decisions_v1";
+var S={cands:[],health:{},dec:{},genres:[],tab:"triage",qi:0,queue:[],filter:{genre:"",verdict:"unrated",status:""},sel:null};
+
+function load(u){return fetch(u,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return null})}
+
+function boot(){
+  Promise.all([load("../data/candidates.json"),load("../data/health.json"),
+               load("../data/decisions.json"),load("../data/genres.json")])
+  .then(function(a){
+    S.cands=(a[0]&&a[0].stations)||[];
+    S.health=(a[1]&&a[1].stations)||{};
+    S.genres=(a[3]&&a[3].genres)||[];
+    var remote=(a[2]&&a[2].decisions)||{};
+    var local={};
+    try{local=JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){}
+    S.dec=Object.assign({},remote,local);
+    render();
+  });
+}
+
+function save(){try{localStorage.setItem(LS,JSON.stringify(S.dec))}catch(e){}}
+function h(id){return S.health[id]||{}}
+function summ(id){return h(id).summary||{}}
+function last(id){return summ(id).last||{}}
+function verdict(id){return (S.dec[id]||{}).verdict||"unrated"}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function gname(id){var g=S.genres.filter(function(x){return x.id===id})[0];return g?g.name:id}
+
+function buildQueue(){
+  var f=S.filter;
+  S.queue=S.cands.filter(function(s){
+    if(f.genre&&(s.genres||[]).indexOf(f.genre)<0)return false;
+    if(f.verdict&&verdict(s.id)!==f.verdict)return false;
+    var st=summ(s.id).status||"unknown";
+    if(f.status&&st!==f.status)return false;
+    if(!f.status&&st==="down")return false;
+    return true;
+  });
+  // najbolji kandidati prvi: lossless > visi bitrate > vise glasova
+  S.queue.sort(function(a,b){
+    var la=last(a.id),lb=last(b.id);
+    if(!!lb.lossless-!!la.lossless)return !!lb.lossless-!!la.lossless;
+    return (lb.bitrate_kbps||0)-(la.bitrate_kbps||0)||(b.rb_votes||0)-(a.rb_votes||0);
+  });
+  if(S.qi>=S.queue.length)S.qi=0;
+}
+
+function setV(v){
+  var s=S.queue[S.qi];if(!s)return;
+  var d=S.dec[s.id]||{};d.verdict=v;d.genres=d.genres||s.genres;d.ts=new Date().toISOString();
+  S.dec[s.id]=d;save();
+  S.qi++;render();
+}
+
+function techChips(s){
+  var l=last(s.id),o=[];
+  if(l.codec)o.push('<i class="chip '+(l.lossless?"good":"")+'">'+esc(l.codec.toUpperCase())+(l.lossless?" · LOSSLESS":"")+"</i>");
+  if(l.bitrate_kbps)o.push('<i class="chip">'+l.bitrate_kbps+" kbps</i>");
+  if(l.sample_rate)o.push('<i class="chip">'+(l.sample_rate/1000)+" kHz</i>");
+  if(l.channels)o.push('<i class="chip">'+(l.channels===2?"stereo":l.channels+"ch")+"</i>");
+  if(l.connect_ms)o.push('<i class="chip '+(l.connect_ms>2500?"warn":"")+'">'+l.connect_ms+" ms</i>");
+  var st=summ(s.id);
+  if(st.status)o.push('<i class="chip '+(st.status==="healthy"?"good":st.status==="down"?"bad":"warn")+'">'+st.status+" "+Math.round((st.uptime||0)*100)+"%</i>");
+  // deklarirano vs izmjereno
+  var dec=l.declared_bitrate||0,m=l.bitrate_kbps||0;
+  if(dec&&m&&Math.abs(dec-m)>dec*0.25)o.push('<i class="chip bad">prijavljeno '+dec+", stvarno "+m+"</i>");
+  return o.join("");
+}
+
+function triage(){
+  buildQueue();
+  var s=S.queue[S.qi];
+  var gopts='<option value="">svi žanrovi</option>'+S.genres.map(function(g){
+    return '<option value="'+g.id+'"'+(S.filter.genre===g.id?" selected":"")+">"+esc(g.name)+"</option>"}).join("");
+  var vopts=["unrated","maybe","yes","no",""].map(function(v){
+    return '<option value="'+v+'"'+(S.filter.verdict===v?" selected":"")+">"+(v||"sve odluke")+"</option>"}).join("");
+  var head='<div class="row"><select id="fg">'+gopts+'</select><select id="fv">'+vopts+"</select></div>";
+  if(!s)return head+'<div class="muted">Nema stanica u ovom filteru.<br>Sve presuđeno. 👏</div>';
+  var l=last(s.id);
+  var url=l.final_url||s.url_resolved||s.url;
+  var done=S.cands.filter(function(x){return verdict(x.id)!=="unrated"}).length;
+  return head+
+  '<div class="card">'+
+    '<div class="meta">'+(S.qi+1)+" / "+S.queue.length+" u redu · "+done+" / "+S.cands.length+" ukupno presuđeno</div>"+
+    '<div class="bar"><i style="width:'+(100*done/Math.max(1,S.cands.length))+'%"></i></div>'+
+    "<h2>"+esc(l.icy_name||s.name)+"</h2>"+
+    '<div class="meta">'+esc(s.country||"??")+" · "+(s.genres||[]).map(gname).join(", ")+
+      (l.icy_genre?" · <i>"+esc(l.icy_genre)+"</i>":"")+"</div>"+
+    '<div class="chips">'+techChips(s)+"</div>"+
+    '<audio id="pl" controls autoplay preload="none" src="'+esc(url)+'"></audio>'+
+    '<div class="actions">'+
+      '<button class="b-no" data-v="no">NE</button>'+
+      '<button class="b-maybe" data-v="maybe">MOŽDA</button>'+
+      '<button class="b-yes" data-v="yes">DA</button>'+
+    "</div>"+
+    '<div class="row"><button id="skip">preskoči →</button><button id="det">detalji</button></div>'+
+  "</div>"+
+  '<div class="muted">Tipkovnica: 1 = NE · 2 = MOŽDA · 3 = DA · → preskoči</div>';
+}
+
+function catalog(){
+  var f=S.filter;
+  var list=S.cands.filter(function(s){
+    if(f.genre&&(s.genres||[]).indexOf(f.genre)<0)return false;
+    if(f.verdict&&verdict(s.id)!==f.verdict)return false;
+    return true;
+  });
+  var gopts='<option value="">svi žanrovi</option>'+S.genres.map(function(g){
+    return '<option value="'+g.id+'"'+(f.genre===g.id?" selected":"")+">"+esc(g.name)+"</option>"}).join("");
+  var vopts=["","yes","maybe","no","unrated"].map(function(v){
+    return '<option value="'+v+'"'+(f.verdict===v?" selected":"")+">"+(v||"sve odluke")+"</option>"}).join("");
+  var rows=list.slice(0,400).map(function(s){
+    var st=summ(s.id).status||"unknown",l=last(s.id),v=verdict(s.id);
+    var c=st==="healthy"?"var(--yes)":st==="down"?"var(--no)":st==="unstable"?"var(--maybe)":"#39424b";
+    return '<div class="item" data-id="'+s.id+'"><i class="dot" style="background:'+c+'"></i>'+
+      '<div class="nm"><b>'+esc(s.name)+"</b><span>"+esc(s.country)+" · "+
+      (l.codec?esc(l.codec.toUpperCase()):"?")+" "+(l.bitrate_kbps||"?")+"k"+(l.lossless?" · lossless":"")+
+      "</span></div><i class='v "+v+"'>"+v+"</i></div>";
+  }).join("");
+  return '<div class="row"><select id="fg">'+gopts+'</select><select id="fv">'+vopts+"</select></div>"+
+    '<div class="card"><div class="meta">'+list.length+" stanica"+(list.length>400?" (prikazano 400)":"")+"</div>"+
+    (rows||'<div class="muted">Prazno.</div>')+"</div>";
+}
+
+function health(){
+  var out="",tot={healthy:0,unstable:0,down:0,unknown:0};
+  var byG=S.genres.map(function(g){
+    var c={cand:0,yes:0,healthy:0,lossless:0};
+    S.cands.forEach(function(s){
+      if((s.genres||[]).indexOf(g.id)<0)return;
+      c.cand++;
+      if(verdict(s.id)==="yes")c.yes++;
+      var st=summ(s.id).status||"unknown";
+      if(st==="healthy")c.healthy++;
+      if(last(s.id).lossless)c.lossless++;
+    });
+    return '<div class="kv"><span>'+esc(g.name)+"</span><span>"+c.cand+" → <b>"+c.yes+
+      "</b> odabrano · "+c.healthy+" zdravih · "+c.lossless+" lossless</span></div>";
+  }).join("");
+  S.cands.forEach(function(s){var st=summ(s.id).status||"unknown";tot[st]=(tot[st]||0)+1});
+  var prod=S.cands.filter(function(s){return verdict(s.id)==="yes"&&summ(s.id).status!=="down"}).length;
+  out+='<div class="card"><h2>'+prod+' stanica u produkciji</h2><div class="meta">Ovo ide na TV pri sljedećem buildu.</div>'+
+    '<div class="chips"><i class="chip good">healthy '+tot.healthy+'</i><i class="chip warn">unstable '+
+    tot.unstable+'</i><i class="chip bad">down '+tot.down+'</i><i class="chip">neprovjereno '+tot.unknown+"</i></div></div>";
+  out+='<div class="card"><div class="meta" style="margin-bottom:8px">Po žanru</div>'+byG+"</div>";
+  return out;
+}
+
+function sync(){
+  var n=Object.keys(S.dec).length;
+  var payload=JSON.stringify({generated:new Date().toISOString(),count:n,decisions:S.dec},null,1);
+  return '<div class="warnbox">Odluke su zasad samo u ovom pregledniku. Dok ih ne spremiš u repo, '+
+    'jedno čišćenje podataka i nema ih.</div>'+
+    '<div class="card"><h2>'+n+" odluka</h2>"+
+    '<div class="row"><button id="dl">Preuzmi decisions.json</button><button id="cp">Kopiraj</button></div>'+
+    '<div class="meta" style="margin:12px 0 6px">Zalijepi sadržaj u <b>data/decisions.json</b> u repou i commitaj.</div>'+
+    "<textarea id='ta' readonly>"+esc(payload)+"</textarea></div>";
+}
+
+function detail(s){
+  var l=last(s.id),st=summ(s.id),hist=(h(s.id).history||[]).slice(-12).reverse();
+  var rows=hist.map(function(r){
+    return '<div class="kv"><span>'+esc((r.ts||"").replace("T"," ").replace("Z",""))+"</span><span>"+
+      (r.ok?'<i class="v yes">ok</i>':'<i class="v no">'+esc(r.error||r.http||"fail")+"</i>")+
+      (r.connect_ms?" "+r.connect_ms+"ms":"")+"</span></div>";
+  }).join("");
+  return '<div class="card"><h2>'+esc(s.name)+'</h2><div class="chips">'+techChips(s)+"</div>"+
+    '<div class="kv"><span>uptime</span><span>'+Math.round((st.uptime||0)*100)+"% / "+(st.checks||0)+" provjera</span></div>"+
+    '<div class="kv"><span>url</span><span style="word-break:break-all;max-width:65%">'+esc(s.url)+"</span></div>"+
+    '<div class="kv"><span>url_resolved</span><span style="word-break:break-all;max-width:65%">'+esc(l.final_url||s.url_resolved||"-")+"</span></div>"+
+    '<audio controls preload="none" src="'+esc(l.final_url||s.url_resolved||s.url)+'"></audio>'+
+    '<div class="actions"><button class="b-no" data-dv="no">NE</button><button class="b-maybe" data-dv="maybe">MOŽDA</button><button class="b-yes" data-dv="yes">DA</button></div>'+
+    '<div class="row"><button id="back">← natrag</button></div>'+
+    '<div class="meta" style="margin:14px 0 4px">Zadnjih 12 provjera</div>'+(rows||'<div class="meta">Još nije provjerena.</div>')+"</div>";
+}
+
+function render(){
+  var m=document.getElementById("app");
+  if(S.sel){m.innerHTML=detail(S.sel);wire();return}
+  m.innerHTML=S.tab==="triage"?triage():S.tab==="catalog"?catalog():S.tab==="health"?health():sync();
+  wire();
+}
+
+function wire(){
+  var q=function(id){return document.getElementById(id)};
+  var fg=q("fg"),fv=q("fv");
+  if(fg)fg.onchange=function(){S.filter.genre=this.value;S.qi=0;render()};
+  if(fv)fv.onchange=function(){S.filter.verdict=this.value;S.qi=0;render()};
+  Array.prototype.forEach.call(document.querySelectorAll("[data-v]"),function(b){
+    b.onclick=function(){setV(b.getAttribute("data-v"))}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-dv]"),function(b){
+    b.onclick=function(){var s=S.sel;var d=S.dec[s.id]||{};d.verdict=b.getAttribute("data-dv");
+      d.genres=d.genres||s.genres;d.ts=new Date().toISOString();S.dec[s.id]=d;save();S.sel=null;render()}});
+  Array.prototype.forEach.call(document.querySelectorAll(".item"),function(it){
+    it.onclick=function(){var id=it.getAttribute("data-id");
+      S.sel=S.cands.filter(function(x){return x.id===id})[0];render()}});
+  if(q("skip"))q("skip").onclick=function(){S.qi++;render()};
+  if(q("det"))q("det").onclick=function(){S.sel=S.queue[S.qi];render()};
+  if(q("back"))q("back").onclick=function(){S.sel=null;render()};
+  if(q("dl"))q("dl").onclick=function(){
+    var b=new Blob([q("ta").value],{type:"application/json"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="decisions.json";a.click()};
+  if(q("cp"))q("cp").onclick=function(){q("ta").select();document.execCommand("copy");this.textContent="Kopirano ✓"};
+}
+
+document.querySelectorAll(".tabs button").forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll(".tabs button").forEach(function(x){x.classList.remove("on")});
+    b.classList.add("on");S.tab=b.getAttribute("data-t");S.sel=null;render();
+  };
+});
+document.addEventListener("keydown",function(e){
+  if(S.tab!=="triage"||S.sel)return;
+  if(e.key==="1")setV("no");else if(e.key==="2")setV("maybe");
+  else if(e.key==="3")setV("yes");else if(e.key==="ArrowRight"){S.qi++;render()}
+});
+boot();
+})();
+</script>
+</body>
+</html>
