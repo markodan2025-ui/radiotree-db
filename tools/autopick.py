@@ -24,6 +24,7 @@ MIN_UPTIME = float(os.environ.get("PICK_MIN_UPTIME", "0.8"))
 RESET = os.environ.get("PICK_RESET", "") == "1"
 
 MAX_PER_HOST = 6          # da ti 40 stanica ne dodje s istog providera
+MANUAL_HOST_CAP = int(os.environ.get("MANUAL_HOST_CAP", "400"))  # rucni uvoz nije scrape
 MAX_PER_COUNTRY_GENRE = 8  # da Jazz ne bude 100% americki
 
 
@@ -160,7 +161,11 @@ def main():
         if not g:
             continue
         hh = host(last.get("final_url") or st.get("url_resolved") or st["url"])
-        if per_host[hh] >= MAX_PER_HOST:
+        # Limit po hostu postoji da scrape ne postane monokultura jednog providera.
+        # Rucno uvezene stanice si BIRAO namjerno - njih limit ne smije rezati.
+        manual = st.get("source") == "manual" or st.get("manual_confirmed")
+        cap = MANUAL_HOST_CAP if manual else MAX_PER_HOST
+        if per_host[hh] >= cap:
             continue
         cg = (st.get("country", "??"), g)
         if per_cg[cg] >= MAX_PER_COUNTRY_GENRE:
@@ -182,7 +187,8 @@ def main():
             if st["id"] in taken or st["id"] in human:
                 continue
             hh = host(last.get("final_url") or st.get("url_resolved") or st["url"])
-            if per_host[hh] >= host_cap:
+            manual = st.get("source") == "manual" or st.get("manual_confirmed")
+            if per_host[hh] >= (MANUAL_HOST_CAP if manual else host_cap):
                 continue
             g = (st.get("genres") or ["other"])[0]
             picked.append((sc, st, g, summ, last))
