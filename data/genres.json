@@ -1,19 +1,30 @@
 {
-  "_comment": "Taksonomija zanrova. tags = sto se salje Radio Browseru. target = koliko stanica zelis u finalnoj bazi.",
+  "_comment": "Taksonomija zanrova. tags = sto se salje Radio Browseru. target = koliko stanica zelis u finalnoj bazi. Redoslijed ovdje = redoslijed u aplikaciji.",
   "genres": [
+    { "id": "lossless",   "name": "Lossless",    "tags": ["flac", "lossless", "hi-fi", "hires"], "target": 50 },
     { "id": "rock",       "name": "Rock",        "tags": ["rock", "classic rock", "hard rock"], "target": 40 },
+    { "id": "pop",        "name": "Pop",         "tags": ["pop", "top 40"], "target": 30 },
     { "id": "jazz",       "name": "Jazz",        "tags": ["jazz", "smooth jazz", "bebop"], "target": 40 },
     { "id": "classical",  "name": "Classical",   "tags": ["classical", "opera", "baroque"], "target": 40 },
     { "id": "blues",      "name": "Blues",       "tags": ["blues", "rhythm and blues"], "target": 30 },
     { "id": "soul",       "name": "Soul",        "tags": ["soul", "funk", "motown"], "target": 30 },
-    { "id": "electronic", "name": "Electronic",  "tags": ["electronic", "ambient", "downtempo", "house"], "target": 40 },
-    { "id": "pop",        "name": "Pop",         "tags": ["pop", "top 40"], "target": 30 },
-    { "id": "world",      "name": "World",       "tags": ["world music", "latin", "reggae", "afrobeat"], "target": 30 },
-    { "id": "folk",       "name": "Folk",        "tags": ["folk", "americana", "country", "bluegrass"], "target": 30 },
+    { "id": "rnb",        "name": "R&B",         "tags": ["rnb", "r&b", "contemporary r&b"], "target": 20 },
     { "id": "hiphop",     "name": "Hip-Hop",     "tags": ["hip hop", "rap"], "target": 25 },
+    { "id": "electronic", "name": "Electronic",  "tags": ["electronic", "downtempo", "idm", "synthwave"], "target": 30 },
+    { "id": "dance",      "name": "Dance",       "tags": ["dance", "house", "techno", "trance", "edm"], "target": 30 },
     { "id": "metal",      "name": "Metal",       "tags": ["metal", "heavy metal", "progressive metal"], "target": 25 },
+    { "id": "punk",       "name": "Punk",        "tags": ["punk", "hardcore punk"], "target": 15 },
+    { "id": "indie",      "name": "Indie",       "tags": ["indie", "alternative", "indie rock"], "target": 25 },
+    { "id": "folk",       "name": "Folk",        "tags": ["folk", "americana", "singer-songwriter"], "target": 25 },
+    { "id": "country",    "name": "Country",     "tags": ["country", "bluegrass", "classic country"], "target": 25 },
+    { "id": "reggae",     "name": "Reggae",      "tags": ["reggae", "ska", "dancehall"], "target": 20 },
+    { "id": "latin",      "name": "Latin",       "tags": ["latin", "salsa", "bachata", "reggaeton"], "target": 20 },
+    { "id": "world",      "name": "World",       "tags": ["world music", "afrobeat", "balkan"], "target": 25 },
+    { "id": "oldies",     "name": "Oldies",      "tags": ["oldies", "60s", "70s", "80s", "90s"], "target": 30 },
+    { "id": "lounge",     "name": "Lounge",      "tags": ["lounge", "easy listening", "bossa nova", "crooner"], "target": 25 },
+    { "id": "ambient",    "name": "Ambient",     "tags": ["ambient", "chillout", "relax", "meditation", "sleep"], "target": 25 },
+    { "id": "gospel",     "name": "Gospel",      "tags": ["gospel", "christian", "worship"], "target": 15 },
     { "id": "news",       "name": "News & Talk", "tags": ["news", "talk", "public radio"], "target": 25 },
-    { "id": "lounge",     "name": "Lounge",      "tags": ["lounge", "chillout", "easy listening", "bossa nova"], "target": 30 },
-    { "id": "audiophile", "name": "Audiophile",  "tags": ["flac", "lossless", "hi-fi", "hires"], "target": 40 }
+    { "id": "artist",     "name": "Artist",      "tags": [], "target": 600 }
   ]
 }
