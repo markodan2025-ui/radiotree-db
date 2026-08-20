@@ -170,7 +170,9 @@ def summarize(hist):
 def main():
     cand_path = os.path.join(DATA, "candidates.json")
     health_path = os.path.join(DATA, "health.json")
-    stations = json.load(open(cand_path, encoding="utf-8"))["stations"]
+    cdoc = json.load(open(cand_path, encoding="utf-8"))
+    stations = cdoc["stations"]
+    stations_all = cdoc["stations"]
 
     health = {"stations": {}}
     if os.path.exists(health_path):
@@ -220,6 +222,40 @@ def main():
     health["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     with open(health_path, "w", encoding="utf-8") as f:
         json.dump(health, f, ensure_ascii=False, indent=1)
+
+    # --- Lossless je IZMJERENA cinjenica, ne tudja oznaka --------------------
+    # Zanr se dosad dodjeljivao pri dohvatu, nagadjanjem iz oznaka Radio
+    # Browsera. Zato je 35 stvarno lossless stanica zavrsilo pod "other", a
+    # dio pod starim nazivom "audiophile". Sada odluku donosi mjerenje:
+    # sto je dekoder potvrdio kao lossless, dobiva oznaku "lossless".
+    changed = 0
+    for st in stations_all:
+        last = (hs.get(st["id"], {}).get("summary", {}) or {}).get("last") or {}
+        gl = st.setdefault("genres", [])
+        if "audiophile" in gl:                       # stari naziv -> novi
+            gl[:] = [g for g in gl if g != "audiophile"]
+            if "lossless" not in gl:
+                gl.append("lossless")
+            changed += 1
+        if last.get("lossless"):
+            if "lossless" not in gl:
+                gl.append("lossless")
+                changed += 1
+            if "other" in gl and len(gl) > 1:        # "other" vise nije potreban
+                gl[:] = [g for g in gl if g != "other"]
+        elif "lossless" in gl and last.get("ok"):
+            # izmjereno je da NIJE lossless -> oznaka se skida
+            gl[:] = [g for g in gl if g != "lossless"]
+            if not gl:
+                gl.append("other")
+            changed += 1
+
+    if changed:
+        cdoc["stations"] = stations_all
+        cdoc["count"] = len(stations_all)
+        with open(cand_path, "w", encoding="utf-8") as f:
+            json.dump(cdoc, f, ensure_ascii=False, indent=1)
+        print(f"Zanr 'lossless' uskladjen s mjerenjem na {changed} stanica")
 
     tally = {}
     for v in hs.values():
