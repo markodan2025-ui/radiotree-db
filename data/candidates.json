@@ -1135,7 +1135,8 @@
    "language": "english",
    "genres": [
     "dance",
-    "oldies"
+    "oldies",
+    "lossless"
    ],
    "rb_tags": [
     "90s",
@@ -15396,7 +15397,8 @@
    "country": "CA",
    "language": "",
    "genres": [
-    "jazz"
+    "jazz",
+    "lossless"
    ],
    "rb_tags": [
     "jazz"
@@ -16974,7 +16976,8 @@
    "language": "american english",
    "genres": [
     "rock",
-    "indie"
+    "indie",
+    "lossless"
    ],
    "rb_tags": [
     "california",
@@ -19626,7 +19629,7 @@
    "language": "american english",
    "genres": [
     "indie",
-    "other"
+    "lossless"
    ],
    "rb_tags": [
     "california",
@@ -26959,7 +26962,8 @@
    "genres": [
     "electronic",
     "lounge",
-    "ambient"
+    "ambient",
+    "lossless"
    ],
    "rb_tags": [
     "ambient",
@@ -28175,7 +28179,7 @@
    "country": "US",
    "language": "english",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [
     "california",
@@ -33118,7 +33122,8 @@
    "country": "US",
    "language": "american english",
    "genres": [
-    "world"
+    "world",
+    "lossless"
    ],
    "rb_tags": [
     "california",
@@ -34725,7 +34730,8 @@
    "genres": [
     "jazz",
     "soul",
-    "oldies"
+    "oldies",
+    "lossless"
    ],
    "rb_tags": [
     "1970s",
@@ -34847,7 +34853,7 @@
    "country": "RU",
    "language": "english,russian",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [
     "music",
@@ -39290,7 +39296,8 @@
    "language": "german",
    "genres": [
     "punk",
-    "reggae"
+    "reggae",
+    "lossless"
    ],
    "rb_tags": [
     "punk",
@@ -41419,7 +41426,7 @@
    "country": "GB",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -42263,7 +42270,7 @@
    "country": "NL",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -47434,7 +47441,7 @@
    "country": "DE",
    "language": "german",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [
     "holiday"
@@ -48138,7 +48145,8 @@
    "country": "CL",
    "language": "",
    "genres": [
-    "dance"
+    "dance",
+    "lossless"
    ],
    "rb_tags": [
     "trance"
@@ -52365,7 +52373,8 @@
    "country": "FR",
    "language": "english,french",
    "genres": [
-    "oldies"
+    "oldies",
+    "lossless"
    ],
    "rb_tags": [
     "80s",
@@ -54452,7 +54461,7 @@
    "country": "ES",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -54471,7 +54480,7 @@
    "country": "FR",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -55499,7 +55508,7 @@
    "country": "CL",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -59983,7 +59992,6 @@
    "language": "french",
    "genres": [
     "lossless",
-    "other",
     "oldies"
    ],
    "rb_tags": [
@@ -62994,7 +63002,8 @@
     "dance",
     "punk",
     "indie",
-    "pop"
+    "pop",
+    "lossless"
    ],
    "rb_tags": [
     "new wave",
@@ -63218,7 +63227,7 @@
    "language": "english",
    "genres": [
     "indie",
-    "other"
+    "lossless"
    ],
    "rb_tags": [
     "adult alternative"
@@ -64215,7 +64224,8 @@
    "country": "FR",
    "language": "",
    "genres": [
-    "world"
+    "world",
+    "lossless"
    ],
    "rb_tags": [
     "world music"
@@ -66302,7 +66312,8 @@
    "country": "US",
    "language": "",
    "genres": [
-    "world"
+    "world",
+    "lossless"
    ],
    "rb_tags": [
     "california",
@@ -67026,7 +67037,8 @@
    "language": "russian",
    "genres": [
     "rock",
-    "pop"
+    "pop",
+    "lossless"
    ],
    "rb_tags": [
     "pop",
@@ -68431,7 +68443,8 @@
    "language": "french",
    "genres": [
     "rnb",
-    "hiphop"
+    "hiphop",
+    "lossless"
    ],
    "rb_tags": [
     "hip-hop",
@@ -78903,7 +78916,8 @@
    "country": "FR",
    "language": "",
    "genres": [
-    "ambient"
+    "ambient",
+    "lossless"
    ],
    "rb_tags": [
     "ambient",
@@ -85033,7 +85047,8 @@
    "country": "BG",
    "language": "",
    "genres": [
-    "ambient"
+    "ambient",
+    "lossless"
    ],
    "rb_tags": [
     "relaxation music"
@@ -85420,7 +85435,8 @@
    "country": "NL",
    "language": "english",
    "genres": [
-    "dance"
+    "dance",
+    "lossless"
    ],
    "rb_tags": [
     "electronic",
@@ -94600,7 +94616,6 @@
    "country": "GR",
    "language": "english,greek",
    "genres": [
-    "lossless",
     "electronic",
     "ambient",
     "other"
@@ -95233,7 +95248,7 @@
    "country": "IT",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -95620,7 +95635,8 @@
    "language": "",
    "genres": [
     "soul",
-    "ambient"
+    "ambient",
+    "lossless"
    ],
    "rb_tags": [
     "chill",
@@ -96481,8 +96497,8 @@
    "country": "IT",
    "language": "",
    "genres": [
-    "other",
-    "oldies"
+    "oldies",
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -97238,7 +97254,7 @@
    "language": "",
    "genres": [
     "electronic",
-    "audiophile"
+    "lossless"
    ],
    "rb_tags": [
     "ambiant",
@@ -104150,7 +104166,8 @@
    "country": "US",
    "language": "",
    "genres": [
-    "electronic"
+    "electronic",
+    "lossless"
    ],
    "rb_tags": [
     "airy",
@@ -104450,7 +104467,8 @@
    "country": "DE",
    "language": "язык: русский",
    "genres": [
-    "dance"
+    "dance",
+    "lossless"
    ],
    "rb_tags": [
     "club dance electronic house trance"
@@ -109430,7 +109448,7 @@
    "country": "US",
    "language": "english",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -113664,7 +113682,7 @@
    "country": "CL",
    "language": "",
    "genres": [
-    "other"
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "OGG",
@@ -115384,7 +115402,7 @@
     "dance",
     "metal",
     "pop",
-    "audiophile"
+    "lossless"
    ],
    "rb_tags": [
     "death metal",
@@ -116197,7 +116215,7 @@
    "country": "PL",
    "language": "",
    "genres": [
-    "audiophile"
+    "lossless"
    ],
    "rb_tags": [
     "eurobeat"
@@ -136746,7 +136764,8 @@
    "country": "",
    "language": "",
    "genres": [
-    "lounge"
+    "lounge",
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "",
@@ -137139,7 +137158,8 @@
    "country": "",
    "language": "",
    "genres": [
-    "oldies"
+    "oldies",
+    "lossless"
    ],
    "rb_tags": [],
    "rb_codec": "",
