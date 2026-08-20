@@ -1,15 +1,25 @@
 {
  "schema": 1,
- "version": 1,
- "generated": "2026-08-18T15:17:58Z",
+ "version": 2,
+ "generated": "2026-08-20T05:12:51Z",
  "count": 0,
- "sha256": "e06080a9724a287e603f50e499260a47fa51c69fd9a13d71f09c3265ef79672c",
- "bytes": 680,
+ "sha256": "61d4221c589449eb5216ef65d4bfbcf6d4ba8870af60dfb996cf5939d18aaab7",
+ "bytes": 1126,
  "stations_url": "stations.json",
  "genres": [
   {
+   "id": "lossless",
+   "name": "Lossless",
+   "count": 0
+  },
+  {
    "id": "rock",
    "name": "Rock",
+   "count": 0
+  },
+  {
+   "id": "pop",
+   "name": "Pop",
    "count": 0
   },
   {
@@ -33,23 +43,8 @@
    "count": 0
   },
   {
-   "id": "electronic",
-   "name": "Electronic",
-   "count": 0
-  },
-  {
-   "id": "pop",
-   "name": "Pop",
-   "count": 0
-  },
-  {
-   "id": "world",
-   "name": "World",
-   "count": 0
-  },
-  {
-   "id": "folk",
-   "name": "Folk",
+   "id": "rnb",
+   "name": "R&B",
    "count": 0
   },
   {
@@ -58,13 +53,58 @@
    "count": 0
   },
   {
+   "id": "electronic",
+   "name": "Electronic",
+   "count": 0
+  },
+  {
+   "id": "dance",
+   "name": "Dance",
+   "count": 0
+  },
+  {
    "id": "metal",
    "name": "Metal",
    "count": 0
   },
   {
-   "id": "news",
-   "name": "News & Talk",
+   "id": "punk",
+   "name": "Punk",
+   "count": 0
+  },
+  {
+   "id": "indie",
+   "name": "Indie",
+   "count": 0
+  },
+  {
+   "id": "folk",
+   "name": "Folk",
+   "count": 0
+  },
+  {
+   "id": "country",
+   "name": "Country",
+   "count": 0
+  },
+  {
+   "id": "reggae",
+   "name": "Reggae",
+   "count": 0
+  },
+  {
+   "id": "latin",
+   "name": "Latin",
+   "count": 0
+  },
+  {
+   "id": "world",
+   "name": "World",
+   "count": 0
+  },
+  {
+   "id": "oldies",
+   "name": "Oldies",
    "count": 0
   },
   {
@@ -73,8 +113,23 @@
    "count": 0
   },
   {
-   "id": "audiophile",
-   "name": "Audiophile",
+   "id": "ambient",
+   "name": "Ambient",
+   "count": 0
+  },
+  {
+   "id": "gospel",
+   "name": "Gospel",
+   "count": 0
+  },
+  {
+   "id": "news",
+   "name": "News & Talk",
+   "count": 0
+  },
+  {
+   "id": "artist",
+   "name": "Artist",
    "count": 0
   }
  ]
